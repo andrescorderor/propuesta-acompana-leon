@@ -1,4 +1,4 @@
-# Propuesta Técnica y Comercial — Acompaña León (Uanify × Rosi)
+# Propuesta Técnica y Comercial — Acompaña León (Uanify × Rosa María)
 
 Presentación ejecutiva interactiva y documento formal de co-creación para el proyecto de acompañamiento confiable en León, Guanajuato.
 
