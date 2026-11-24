@@ -1,0 +1,1563 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Propuesta Técnica y Comercial — Acompaña León (Uaniofy × Rosi)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter+Tight:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f5f3ef;
+        --surface: #ffffff;
+        --card: #faf9f7;
+        --fg: #33363b;
+        --body: #4b4f56;
+        --muted: #6b7078;
+        --border: #e6e3de;
+        --primary: #2e5a4c;
+        --primary-on-dark: #8fc1ae;
+        --accent: #c87d4b;
+        --rail-w: 248px;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Inter Tight", system-ui, -apple-system, sans-serif;
+        letter-spacing: -0.01em;
+      }
+
+      html.doc-mode {
+        scroll-snap-type: none;
+        background: #ebe8e2;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        overflow-x: hidden;
+      }
+
+      a, button, label {
+        cursor: pointer;
+      }
+
+      /* Top progress line */
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: var(--rail-w);
+        right: 0;
+        height: 3px;
+        background: var(--primary);
+        transform-origin: left;
+        transform: scaleX(0.14);
+        transition: transform 0.35s var(--ease);
+        z-index: 120;
+      }
+
+      /* LEFT VERTICAL SIDEBAR */
+      .left-rail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: var(--rail-w);
+        z-index: 100;
+        background: var(--card);
+        border-right: 1px solid var(--border);
+        padding: 26px 18px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .rail-top {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .brand-block {
+        padding: 0 6px;
+      }
+      .brand {
+        font-size: 1.5rem;
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        color: var(--fg);
+        text-decoration: none;
+        display: inline-block;
+      }
+      .brand span {
+        color: var(--primary);
+      }
+      .brand-sub {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.61rem;
+        text-transform: uppercase;
+        letter-spacing: 0.13em;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+
+      .mode-switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+        background: #ebe8e2;
+        padding: 4px;
+        border-radius: 10px;
+      }
+      .mode-btn {
+        border: none;
+        background: transparent;
+        padding: 7px 8px;
+        border-radius: 7px;
+        font-family: "Inter Tight", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--muted);
+        transition: all 0.2s;
+      }
+      .mode-btn.active {
+        background: #ffffff;
+        color: var(--fg);
+        box-shadow: 0 2px 8px rgba(51, 54, 59, 0.08);
+      }
+
+      .rail-nav-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+        padding: 0 8px;
+        margin-bottom: 4px;
+      }
+
+      .rail-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .rail-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--muted);
+        border-left: 2px solid transparent;
+        transition: all 0.2s var(--ease);
+      }
+      .rail-link:hover {
+        color: var(--fg);
+        background: rgba(51, 54, 59, 0.04);
+      }
+      .rail-link.active {
+        color: var(--primary);
+        background: rgba(46, 90, 76, 0.1);
+        border-left-color: var(--primary);
+        font-weight: 600;
+      }
+      .rail-num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        opacity: 0.75;
+        min-width: 18px;
+      }
+
+      .rail-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-top: 1px solid var(--border);
+        padding-top: 14px;
+      }
+
+      .rail-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 5px 8px;
+      }
+      .ctrl-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--fg);
+        font-size: 0.82rem;
+        display: grid;
+        place-items: center;
+        transition: all 0.2s;
+      }
+      .ctrl-btn:hover {
+        background: var(--primary);
+        color: #ffffff;
+      }
+      .slide-counter {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .btn-demo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 10px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        background: var(--fg);
+        color: #faf9f7;
+        transition: all 0.25s var(--ease);
+      }
+      .btn-demo:hover {
+        background: var(--primary);
+        color: #ffffff;
+      }
+
+      /* MAIN CONTENT AREA */
+      .deck-view,
+      .formal-doc-wrapper {
+        margin-left: var(--rail-w);
+        width: calc(100% - var(--rail-w));
+      }
+
+      .slide {
+        min-height: 100svh;
+        width: 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 52px 4.5vw;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container {
+        width: min(1240px, 100%);
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .slide-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .slide-dark .slide-header {
+        border-bottom-color: rgba(255, 255, 255, 0.14);
+      }
+
+      .eyebrow {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+      .section-title {
+        font-size: clamp(2.1rem, 4.4vw, 3.9rem);
+        font-weight: 500;
+        line-height: 0.94;
+        letter-spacing: -0.045em;
+        color: var(--fg);
+      }
+      .section-title .dot {
+        color: var(--primary);
+      }
+      .section-title em {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-style: italic;
+        font-weight: 400;
+        color: var(--primary);
+      }
+
+      .header-sub {
+        max-width: 370px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--muted);
+        text-align: right;
+      }
+
+      /* SLIDE 1: HERO */
+      .slide-hero {
+        background: radial-gradient(circle at 80% 25%, rgba(46, 90, 76, 0.42), transparent 55%),
+          radial-gradient(circle at 18% 85%, rgba(200, 125, 75, 0.18), transparent 50%),
+          #25292d;
+        color: #faf9f7;
+        justify-content: space-between;
+        padding: 44px 4.5vw;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        width: min(1240px, 100%);
+        margin: 0 auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .telemetry-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        padding: 12px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.22);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.67rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+      }
+      .hero-title {
+        font-size: clamp(3rem, 8.2vw, 7rem);
+        font-weight: 200;
+        line-height: 0.88;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+        margin: 18px 0 14px;
+      }
+      .hero-title em {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-style: italic;
+        color: var(--primary-on-dark);
+        text-transform: none;
+      }
+
+      .hero-kpi-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .hero-kpi {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 16px 18px;
+      }
+      .hero-kpi-val {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--primary-on-dark);
+      }
+      .hero-kpi-lbl {
+        font-size: 0.78rem;
+        color: #e6e3de;
+        margin-top: 4px;
+      }
+
+      /* Grids & Cards */
+      .grid-12 {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 18px;
+      }
+      .col-3 { grid-column: span 3; }
+      .col-4 { grid-column: span 4; }
+      .col-5 { grid-column: span 5; }
+      .col-6 { grid-column: span 6; }
+      .col-7 { grid-column: span 7; }
+      .col-8 { grid-column: span 8; }
+      .col-12 { grid-column: span 12; }
+
+      .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      }
+      .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px -24px rgba(51, 54, 59, 0.2);
+      }
+      .stat-card.dark {
+        background: #2f3338;
+        border-color: #2f3338;
+        color: #faf9f7;
+      }
+      .big-stat {
+        font-size: clamp(1.8rem, 3vw, 2.7rem);
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        line-height: 0.96;
+        color: var(--primary);
+      }
+      .stat-card.dark .big-stat {
+        color: var(--primary-on-dark);
+      }
+      .stat-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .stat-card.dark .stat-title {
+        color: #ffffff;
+      }
+      .stat-desc {
+        font-size: 0.82rem;
+        line-height: 1.48;
+        color: var(--muted);
+      }
+      .stat-card.dark .stat-desc {
+        color: #d6d3cd;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.64rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        background: rgba(46, 90, 76, 0.12);
+        color: var(--primary);
+        width: fit-content;
+      }
+      .badge.dark-badge {
+        background: rgba(143, 193, 174, 0.16);
+        color: var(--primary-on-dark);
+      }
+
+      .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        padding: 5px 11px;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        font-weight: 500;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        color: var(--fg);
+      }
+
+      /* Comparison table inside slide */
+      .comp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .comp-table th {
+        text-align: left;
+        padding: 12px 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        background: var(--card);
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+      .comp-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+        line-height: 1.45;
+      }
+      .comp-table tr:last-child td {
+        border-bottom: none;
+      }
+      .comp-new {
+        background: rgba(46, 90, 76, 0.05);
+        color: var(--fg);
+        font-weight: 500;
+      }
+
+      /* Timeline Steps */
+      .timeline-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .phase-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .phase-num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .phase-week {
+        background: #33363b;
+        color: #faf9f7;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 0.64rem;
+      }
+      .phase-card h3 {
+        font-size: 1.12rem;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .phase-card p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      /* Dark Slide & Interactive Quote */
+      .slide-dark {
+        background: #2b2f34;
+        color: #f5f3ef;
+      }
+      .slide-dark .eyebrow,
+      .slide-dark .section-title .dot,
+      .slide-dark .section-title em {
+        color: var(--primary-on-dark);
+      }
+      .slide-dark .section-title {
+        color: #f5f3ef;
+      }
+      .slide-dark .header-sub {
+        color: #b8bdc4;
+      }
+
+      .module-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid #4b4f56;
+        background: rgba(255, 255, 255, 0.04);
+        transition: all 0.25s;
+        margin-bottom: 10px;
+      }
+      .module-toggle.active {
+        border-color: var(--primary-on-dark);
+        background: rgba(143, 193, 174, 0.13);
+      }
+      .module-toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+        flex-shrink: 0;
+      }
+      .mono-price {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .quote-box {
+        background: #faf9f7;
+        color: #33363b;
+        border-radius: 20px;
+        padding: 26px;
+        box-shadow: 0 28px 64px rgba(0, 0, 0, 0.28);
+      }
+      .quote-total {
+        font-size: clamp(2.1rem, 3.8vw, 3.1rem);
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        color: var(--primary);
+        line-height: 1;
+        margin: 8px 0 4px;
+      }
+
+      /* FORMAL DOCUMENT VIEW */
+      .formal-doc-wrapper {
+        display: none;
+        padding: 48px 4vw 64px;
+      }
+      html.doc-mode .deck-view {
+        display: none !important;
+      }
+      html.doc-mode .formal-doc-wrapper {
+        display: block;
+      }
+
+      .formal-sheet {
+        max-width: 920px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 52px 60px;
+        box-shadow: 0 24px 60px -28px rgba(51, 54, 59, 0.25);
+        color: var(--fg);
+      }
+
+      .doc-letterhead {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 24px;
+        padding-bottom: 22px;
+        border-bottom: 2px solid var(--fg);
+        margin-bottom: 26px;
+      }
+      .doc-brand {
+        font-size: 1.9rem;
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        color: var(--fg);
+      }
+      .doc-brand span {
+        color: var(--primary);
+      }
+      .doc-meta-box {
+        text-align: right;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .doc-h1 {
+        font-size: 1.8rem;
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 1.15;
+        color: var(--fg);
+        margin-bottom: 18px;
+      }
+
+      .doc-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 32px;
+      }
+      .doc-meta-item small {
+        display: block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+      }
+      .doc-meta-item strong {
+        display: block;
+        font-size: 0.88rem;
+        color: var(--fg);
+        margin-top: 3px;
+      }
+      .doc-meta-item strong.accent {
+        color: var(--primary);
+      }
+
+      .doc-section {
+        margin-bottom: 28px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+        scroll-margin-top: 28px;
+      }
+      .doc-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .doc-h2 {
+        font-size: 1.18rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--fg);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .doc-h2::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--primary);
+      }
+
+      .doc-h3 {
+        font-size: 0.96rem;
+        font-weight: 600;
+        color: var(--fg);
+        margin: 14px 0 8px;
+      }
+
+      .doc-list {
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .doc-list li {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--body);
+      }
+      .doc-quote {
+        margin: 10px 0 12px;
+        padding: 10px 16px;
+        border-left: 3px solid var(--primary);
+        background: rgba(46, 90, 76, 0.07);
+        border-radius: 0 8px 8px 0;
+        font-size: 0.88rem;
+        font-style: italic;
+        color: var(--fg);
+      }
+
+      .doc-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 16px;
+        font-size: 0.86rem;
+      }
+      .doc-table th {
+        text-align: left;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.66rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        color: var(--muted);
+        background: var(--card);
+        padding: 10px 12px;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--fg);
+      }
+      .doc-table td {
+        padding: 11px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--body);
+        vertical-align: top;
+        line-height: 1.5;
+      }
+      .doc-table tr.total-row td {
+        background: var(--card);
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .doc-table .num-col {
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        white-space: nowrap;
+        color: var(--fg);
+      }
+
+      @media (max-width: 980px) {
+        html { scroll-snap-type: none; }
+        .left-rail {
+          position: static;
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+        .progress-bar { left: 0; }
+        .deck-view, .formal-doc-wrapper {
+          margin-left: 0;
+          width: 100%;
+        }
+        .telemetry-strip, .hero-kpi-bar, .timeline-grid, .doc-meta-grid { grid-template-columns: 1fr; }
+        .col-3, .col-4, .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
+        .slide-header { flex-direction: column; align-items: flex-start; }
+        .header-sub { text-align: left; }
+        .formal-sheet { padding: 28px 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- ÍNDICE VERTICAL FIJO A LA IZQUIERDA -->
+    <aside class="left-rail" aria-label="Índice de la propuesta">
+      <div class="rail-top">
+        <div class="brand-block">
+          <a href="#s1" onclick="setDocMode(false)" class="brand">Acompaña<span>León.</span></a>
+          <div class="brand-sub">Uaniofy × Rosi · Co-creación</div>
+        </div>
+
+        <div class="mode-switch" role="tablist" aria-label="Cambiar vista">
+          <button type="button" id="btnDeckMode" onclick="setDocMode(false)" class="mode-btn active">
+            Presentación
+          </button>
+          <button type="button" id="btnDocMode" onclick="setDocMode(true)" class="mode-btn">
+            Documento
+          </button>
+        </div>
+
+        <!-- Índice vertical Modo Presentación -->
+        <div id="deckIndex">
+          <div class="rail-nav-label">Láminas</div>
+          <nav class="rail-nav" aria-label="Láminas de la presentación">
+            <a href="#s1" data-nav="0" class="rail-link active">
+              <span class="rail-num">01</span><span>Portada</span>
+            </a>
+            <a href="#s2" data-nav="1" class="rail-link">
+              <span class="rail-num">02</span><span>León &amp; Comparativo</span>
+            </a>
+            <a href="#s3" data-nav="2" class="rail-link">
+              <span class="rail-num">03</span><span>Portal Apoderado</span>
+            </a>
+            <a href="#s4" data-nav="3" class="rail-link">
+              <span class="rail-num">04</span><span>Confianza 3 Badges</span>
+            </a>
+            <a href="#s5" data-nav="4" class="rail-link">
+              <span class="rail-num">05</span><span>Modelo &amp; Cloud $0</span>
+            </a>
+            <a href="#s6" data-nav="5" class="rail-link">
+              <span class="rail-num">06</span><span>Piloto (6 Semanas)</span>
+            </a>
+            <a href="#s7" data-nav="6" class="rail-link">
+              <span class="rail-num">07</span><span>Inversión Modular</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Índice vertical Modo Documento -->
+        <div id="docIndex" style="display: none">
+          <div class="rail-nav-label">Secciones</div>
+          <nav class="rail-nav" aria-label="Secciones del documento">
+            <a href="#d1" class="rail-link"><span class="rail-num">01</span><span>Resumen &amp; León</span></a>
+            <a href="#d2" class="rail-link"><span class="rail-num">02</span><span>Comparativo</span></a>
+            <a href="#d3" class="rail-link"><span class="rail-num">03</span><span>Alcance MVP</span></a>
+            <a href="#d4" class="rail-link"><span class="rail-num">04</span><span>Seguridad &amp; 40h</span></a>
+            <a href="#d5" class="rail-link"><span class="rail-num">05</span><span>Tarifas &amp; Planes</span></a>
+            <a href="#d6" class="rail-link"><span class="rail-num">06</span><span>Stack $0 USD</span></a>
+            <a href="#d7" class="rail-link"><span class="rail-num">07</span><span>Cronograma</span></a>
+            <a href="#d8" class="rail-link"><span class="rail-num">08</span><span>Inversión &amp; Co-creación</span></a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="rail-bottom">
+        <div class="rail-controls" id="slideControls">
+          <button type="button" class="ctrl-btn" onclick="stepSlide(-1)" title="Anterior (↑ / ←)">←</button>
+          <span class="slide-counter" id="slideCounter">01 / 07</span>
+          <button type="button" class="ctrl-btn" onclick="stepSlide(1)" title="Siguiente (↓ / →)">→</button>
+          <button type="button" class="ctrl-btn" onclick="toggleFull()" title="Pantalla completa">⛶</button>
+        </div>
+
+        <a href="https://andrescorderor.github.io/acompana-leon/" target="_blank" rel="noopener noreferrer" class="btn-demo">
+          Ver Demo MVP en Vivo ↗
+        </a>
+      </div>
+    </aside>
+
+    <!-- VISTA 1: PRESENTACIÓN VISUAL (7 LÁMINAS CONCISAS) -->
+    <main class="deck-view">
+      <!-- LÁMINA 01: PORTADA -->
+      <section id="s1" class="slide slide-hero">
+        <div class="hero-content">
+          <div class="telemetry-strip">
+            <span>Co-creación · Uaniofy × Rosi</span>
+            <span>Marca Provisional · Acompaña León</span>
+            <span>León, Guanajuato · México</span>
+            <span style="text-align: right">MVP Funcional Listo</span>
+          </div>
+
+          <div style="margin: auto 0; padding: 24px 0">
+            <span class="badge dark-badge">Marketplace Curado · Acompañamiento Confiable</span>
+            <h1 class="hero-title">
+              Cuidado <em>&amp;</em><br />Confianza Trazable.
+            </h1>
+            <p style="max-width: 600px; font-size: 1.12rem; color: #e6e3de; font-weight: 300; line-height: 1.55">
+              Plataforma digital para conectar a familias y apoderados con <strong>acompañantes validados en 3 niveles</strong> en León, Guanajuato — sin necesidad de invertir en flotilla propia desde el día uno.
+            </p>
+          </div>
+
+          <div class="hero-kpi-bar">
+            <div class="hero-kpi">
+              <div class="hero-kpi-val">165,649</div>
+              <div class="hero-kpi-lbl">Adultos 60+ en León (9.6% → 15% en 2040)</div>
+            </div>
+            <div class="hero-kpi">
+              <div class="hero-kpi-val">3 Badges</div>
+              <div class="hero-kpi-lbl">KYC + Referencias + Certificación 40 h</div>
+            </div>
+            <div class="hero-kpi">
+              <div class="hero-kpi-val">PIN + WA</div>
+              <div class="hero-kpi-lbl">Trazabilidad puerta a puerta + Acta</div>
+            </div>
+            <div class="hero-kpi">
+              <div class="hero-kpi-val">$0 USD / mes</div>
+              <div class="hero-kpi-lbl">Nube ligera en fase piloto</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 02: MERCADO LEÓN & COMPARATIVO DIRECTO -->
+      <section id="s2" class="slide">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">01 — Diagnóstico León &amp; Ventaja Asset-Light</p>
+              <h2 class="section-title">De idea de transporte a <em>confianza humana</em><span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              Usuario ≠ Comprador: el adulto mayor vive trato digno y autonomía; el familiar obtiene trazabilidad total.
+            </p>
+          </div>
+
+          <div class="grid-12">
+            <div class="col-12">
+              <table class="comp-table">
+                <thead>
+                  <tr>
+                    <th style="width: 22%">Dimensión</th>
+                    <th style="width: 38%">Situación / Alternativas Actuales</th>
+                    <th style="width: 40%">Plataforma Acompaña (Uaniofy × Rosi)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Inversión Inicial (CapEx)</strong></td>
+                    <td>Comprar/adaptar minivan exige <strong>~$234,000 MXN</strong> y 5–6 viajes diarios para cubrir costos fijos.</td>
+                    <td class="comp-new"><strong>$0 en flotilla inicial:</strong> traslado flexible (auto propio, taxi/app, vehículo familiar o a pie).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Confianza del Personal</strong></td>
+                    <td>Taxis o apps sin capacitación gerontológica; cuidadores informales sin verificación formal.</td>
+                    <td class="comp-new"><strong>Marketplace curado con 3 Badges:</strong> KYC + No Antecedentes + Entrevista + Certificación 40 h.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Alcance del Servicio</strong></td>
+                    <td>TUI o taxi dejan en banqueta; no acompañan dentro de IMSS, hospitales, bancos o trámites.</td>
+                    <td class="comp-new"><strong>Puerta → cita/trámite → puerta</strong> con expediente del asistido y regla de trato digno.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Seguimiento Familiar</strong></td>
+                    <td>Llamadas inciertas o esperar noticias hasta el regreso a casa.</td>
+                    <td class="comp-new"><strong>PIN de recogida + Mapa en vivo + Avisos WhatsApp + Acta de Entrega</strong> nominativa.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 03: PORTAL APODERADO -->
+      <section id="s3" class="slide" style="background: var(--card)">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">02 — Experiencia del Apoderado / Familiar</p>
+              <h2 class="section-title">Expediente, planes <em>&amp;</em> control en vivo<span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              Todo lo necesario para contratar una sola cita o un plan mensual recurrente con tranquilidad absoluta.
+            </p>
+          </div>
+
+          <div class="grid-12">
+            <div class="stat-card col-4">
+              <span class="badge">01 · Expediente Digital</span>
+              <div class="stat-title">Ficha de Movilidad y Trato Digno</div>
+              <p class="stat-desc">
+                Registra domicilio en León, apoyos (bastón, andador), notas de respeto y <strong>personas autorizadas para recibir</strong>. Incluye filtro automático que bloquea casos médicos/camilla (Nivel 3).
+              </p>
+              <div class="chip-list">
+                <span class="chip">Nivel 1 y 2</span>
+                <span class="chip">Privacidad LFPDPPP</span>
+              </div>
+            </div>
+
+            <div class="stat-card col-4">
+              <span class="badge">02 · Cita Única o Plan</span>
+              <div class="stat-title">Agendamiento Flexible en 3 Pasos</div>
+              <p class="stat-desc">
+                Contrata por ocasión (<strong>$320–$420 MXN</strong>) o descuenta créditos de un <strong>Plan Familiar (4 u 8 citas/mes)</strong>. Elige modalidad Simple o Asistida y tipo de traslado según la ruta.
+              </p>
+              <div class="chip-list">
+                <span class="chip">Hospitales León</span>
+                <span class="chip">Bancos y Trámites</span>
+              </div>
+            </div>
+
+            <div class="stat-card dark col-4">
+              <span class="badge dark-badge">03 · Trazabilidad Triple</span>
+              <div class="stat-title">PIN + Mapa + WhatsApp + Acta</div>
+              <p class="stat-desc">
+                El acompañante valida un <strong>PIN de 4 dígitos</strong> al recoger, actualiza 5 hitos en mapa en vivo, dispara mensajes automáticos por WhatsApp y firma un <strong>Acta de Entrega</strong> al volver.
+              </p>
+              <div class="chip-list">
+                <span class="chip" style="background: rgba(255,255,255,0.08); border-color: #4b4f56; color: #fff">Botón Protocolo 911</span>
+                <span class="chip" style="background: rgba(255,255,255,0.08); border-color: #4b4f56; color: #fff">Evaluación</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 04: CONFIANZA Y SISTEMA DE 3 BADGES -->
+      <section id="s4" class="slide">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">03 — Marketplace Curado &amp; Sistema de Seguridad</p>
+              <h2 class="section-title">Validación en <em>3 insignias</em> visibles<span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              Unimos la validación tecnológica KYC de Uaniofy con el programa de capacitación de 40 horas diseñado por Rosi.
+            </p>
+          </div>
+
+          <div class="grid-12">
+            <div class="stat-card col-4">
+              <span class="badge">Insignia 01</span>
+              <div class="big-stat">KYC</div>
+              <div class="stat-title">Identidad y Antecedentes</div>
+              <p class="stat-desc">
+                INE vigente, selfie biométrica, comprobante de domicilio en León y carta de no antecedentes revisados en el panel Admin.
+              </p>
+            </div>
+
+            <div class="stat-card col-4">
+              <span class="badge">Insignia 02</span>
+              <div class="big-stat">Ética</div>
+              <div class="stat-title">Aptitud y Referencias</div>
+              <p class="stat-desc">
+                Entrevista personal con operación (Rosi), validación de 2+ referencias y evaluación de empatía, paciencia y trato digno.
+              </p>
+            </div>
+
+            <div class="stat-card col-4" style="border-color: var(--primary)">
+              <span class="badge">Insignia 03</span>
+              <div class="big-stat">40 h</div>
+              <div class="stat-title">Certificación + 1os Auxilios</div>
+              <p class="stat-desc">
+                Movilidad con bastón/andador, primeros auxilios, conducción defensiva, prevención de caídas y simulación práctica (mín. 80%).
+              </p>
+            </div>
+
+            <div class="stat-card col-12" style="background: var(--card); flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 16px 22px">
+              <div style="font-size: 0.88rem">
+                <strong>Regla de Oro Operativa:</strong> <em>“Ayudar sin sustituir la autonomía”</em> · Límite estricto no-médico en cada cita.
+              </div>
+              <div class="chip-list">
+                <span class="chip">Meta: ≥99% sin incidentes</span>
+                <span class="chip">Meta: ≥95% puntualidad</span>
+                <span class="chip">Meta: ≥90% satisfacción</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 05: MODELO DE NEGOCIO & STACK $0 -->
+      <section id="s5" class="slide" style="background: var(--card)">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">04 — Monetización &amp; Tecnología Ligera</p>
+              <h2 class="section-title">Economía sana <em>&amp;</em> nube en $0 USD<span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              Ingresos recurrentes por planes mensuales y comisión del 18%, operando sobre arquitectura sin costos fijos de servidor.
+            </p>
+          </div>
+
+          <div class="grid-12">
+            <div class="stat-card col-4">
+              <span class="badge">Pago por Evento</span>
+              <div class="big-stat">$320–420</div>
+              <div class="stat-title">Cita Única (Simple / Asistida)</div>
+              <p class="stat-desc">
+                Ideal para validar demanda en León sin fricción. Incluye comisión de plataforma del <strong>18%</strong> por servicio completado.
+              </p>
+            </div>
+
+            <div class="stat-card col-4" style="border-color: var(--primary)">
+              <span class="badge">Ingreso Recurrente</span>
+              <div class="big-stat">$1,360+</div>
+              <div class="stat-title">Planes de 4 y 8 Citas / Mes</div>
+              <p class="stat-desc">
+                <strong>Plan 4 ($1,360 MXN)</strong> y <strong>Plan 8 ($2,560 MXN)</strong>. Convierte traslados médicos o bancarios frecuentes en flujo mensual predecible.
+              </p>
+            </div>
+
+            <div class="stat-card dark col-4">
+              <span class="badge dark-badge">Uaniofy Cloud $0</span>
+              <div class="big-stat">$0 USD</div>
+              <div class="stat-title">React + Firebase / Supabase</div>
+              <p class="stat-desc">
+                Capa gratuita perpetua (50,000 lecturas/día + SSL + Auth). Escala a costos variables solo cuando el volumen de citas ya es rentable.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 06: HOJA DE RUTA DEL PILOTO (6 SEMANAS) -->
+      <section id="s6" class="slide">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">05 — Hoja de Ruta del Piloto en León</p>
+              <h2 class="section-title">Del prototipo al piloto en <em>6 semanas</em><span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              De este demo funcional pasamos a operación real con las primeras familias y acompañantes certificados en León.
+            </p>
+          </div>
+
+          <div class="timeline-grid">
+            <div class="phase-card">
+              <div class="phase-num"><span>Fase 01</span><span class="phase-week">1 Semana</span></div>
+              <div>
+                <h3>Marca y Base de Datos</h3>
+                <p style="margin-top: 8px">Nombre oficial con Rosi, reglas de privacidad LFPDPPP y esquema en Firestore/Supabase.</p>
+              </div>
+              <span class="badge">Semana 1</span>
+            </div>
+
+            <div class="phase-card">
+              <div class="phase-num"><span>Fase 02</span><span class="phase-week">2 Semanas</span></div>
+              <div>
+                <h3>Portales Apoderado &amp; Acompañante</h3>
+                <p style="margin-top: 8px">Expedientes con filtro Nivel 1/2/3, contratación de citas/planes y flujo PIN en campo.</p>
+              </div>
+              <span class="badge">Semanas 2 – 3</span>
+            </div>
+
+            <div class="phase-card">
+              <div class="phase-num"><span>Fase 03</span><span class="phase-week">2 Semanas</span></div>
+              <div>
+                <h3>Panel KYC y Trazabilidad</h3>
+                <p style="margin-top: 8px">Validación manual de 3 badges, bitácora en tiempo real, actas de entrega y alertas.</p>
+              </div>
+              <span class="badge">Semanas 4 – 5</span>
+            </div>
+
+            <div class="phase-card" style="border-color: var(--primary); background: #ffffff">
+              <div class="phase-num"><span>Fase 04</span><span class="phase-week" style="background: var(--primary)">1 Semana</span></div>
+              <div>
+                <h3>Piloto Real en León</h3>
+                <p style="margin-top: 8px">Certificación de 5–10 acompañantes iniciales, pruebas en campo y lanzamiento productivo.</p>
+              </div>
+              <span class="badge">Semana 6 · Go-Live</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LÁMINA 07: CALCULADORA INTERACTIVA DE INVERSIÓN MODULAR -->
+      <section id="s7" class="slide slide-dark">
+        <div class="container">
+          <div class="slide-header">
+            <div>
+              <p class="eyebrow">06 — Inversión Modular &amp; Esquema de Co-creación</p>
+              <h2 class="section-title">Alcance configurable <em>por etapas</em><span class="dot">.</span></h2>
+            </div>
+            <p class="header-sub">
+              Simula los módulos opcionales para presupuestar con inversionistas o definir el arranque de co-creación.
+            </p>
+          </div>
+
+          <div class="grid-12" style="align-items: start">
+            <div class="col-7">
+              <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--primary-on-dark); margin-bottom: 8px">
+                Base Obligatoria + Módulos Opcionales
+              </p>
+
+              <div class="module-toggle active" style="cursor: default">
+                <div>
+                  <strong style="font-size: 1rem; color: #ffffff">Core MVP Plataforma Acompaña (3 Portales)</strong>
+                  <p style="font-size: 0.78rem; color: #d6d3cd; margin-top: 4px; line-height: 1.45">
+                    Expedientes + Filtro No-Médico, Cita Única y Planes 4/8, Validación KYC 3 Badges, PIN + Bitácora + Acta + Protocolo 911 + Cloud $0 USD/mes.
+                  </p>
+                </div>
+                <span class="mono-price" style="color: #ffffff; font-size: 1rem">$28,000 MXN</span>
+              </div>
+
+              <label class="module-toggle" id="row-mod1">
+                <div style="display: flex; align-items: flex-start; gap: 12px">
+                  <input type="checkbox" id="mod1" data-price="6500" onchange="recalcQuote()" />
+                  <div>
+                    <strong style="font-size: 0.92rem; color: #ffffff">Módulo A · WhatsApp Business API Automático</strong>
+                    <p style="font-size: 0.76rem; color: #c7cbd1; margin-top: 2px">
+                      Envío automático sin clics de PIN, recogida y acta de entrega directo al WhatsApp del familiar.
+                    </p>
+                  </div>
+                </div>
+                <span class="mono-price" style="color: var(--primary-on-dark)">+$6,500 MXN</span>
+              </label>
+
+              <label class="module-toggle" id="row-mod2">
+                <div style="display: flex; align-items: flex-start; gap: 12px">
+                  <input type="checkbox" id="mod2" data-price="5500" onchange="recalcQuote()" />
+                  <div>
+                    <strong style="font-size: 0.92rem; color: #ffffff">Módulo B · Pasarela de Pagos y Suscripciones</strong>
+                    <p style="font-size: 0.76rem; color: #c7cbd1; margin-top: 2px">
+                      Cobro recurrente con tarjeta / SPEI (Stripe o MercadoPago) y cálculo automático de comisión 18%.
+                    </p>
+                  </div>
+                </div>
+                <span class="mono-price" style="color: var(--primary-on-dark)">+$5,500 MXN</span>
+              </label>
+
+              <label class="module-toggle" id="row-mod3">
+                <div style="display: flex; align-items: flex-start; gap: 12px">
+                  <input type="checkbox" id="mod3" data-price="7000" onchange="recalcQuote()" />
+                  <div>
+                    <strong style="font-size: 0.92rem; color: #ffffff">Módulo C · GPS Continuo + App Instalable (PWA)</strong>
+                    <p style="font-size: 0.76rem; color: #c7cbd1; margin-top: 2px">
+                      Rastreo geográfico en tiempo real durante la cita y notificaciones push en celular.
+                    </p>
+                  </div>
+                </div>
+                <span class="mono-price" style="color: var(--primary-on-dark)">+$7,000 MXN</span>
+              </label>
+            </div>
+
+            <div class="quote-box col-5">
+              <div style="display: flex; align-items: center; justify-content: space-between">
+                <span class="badge">Valor de Referencia</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--muted)">6 Semanas</span>
+              </div>
+              <div class="quote-total" id="totalAmount">$28,000 MXN</div>
+              <p style="font-size: 0.78rem; color: var(--muted); font-weight: 500" id="packageLabel">
+                Core MVP (Listo para piloto en León)
+              </p>
+
+              <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px">
+                <div style="background: #ffffff; border: 1px solid var(--border); padding: 10px; border-radius: 10px">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--muted)">40% INICIO</span>
+                  <div style="font-size: 0.98rem; font-weight: 600; margin-top: 2px" id="p1Amount">$11,200</div>
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border); padding: 10px; border-radius: 10px">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--muted)">30% AVANCE</span>
+                  <div style="font-size: 0.98rem; font-weight: 600; margin-top: 2px" id="p2Amount">$8,400</div>
+                </div>
+                <div style="background: #ffffff; border: 1px solid var(--border); padding: 10px; border-radius: 10px">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--muted)">30% GO-LIVE</span>
+                  <div style="font-size: 0.98rem; font-weight: 600; margin-top: 2px" id="p3Amount">$8,400</div>
+                </div>
+              </div>
+
+              <p style="margin-top: 12px; font-size: 0.75rem; color: var(--body); line-height: 1.45">
+                <strong>Modalidad Co-creación:</strong> Este valor sirve como base para compensación por etapas o aportación tecnológica de Uaniofy frente a la operación de Rosi.
+              </p>
+
+              <a
+                href="https://andrescorderor.github.io/acompana-leon/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-demo"
+                style="margin-top: 14px; background: var(--primary); color: #ffffff"
+              >
+                Probar Demo MVP Interactivo ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- VISTA 2: DOCUMENTO FORMAL COMPLETO -->
+    <section class="formal-doc-wrapper" aria-label="Propuesta Técnica y Comercial con Formato">
+      <article class="formal-sheet">
+        <header class="doc-letterhead">
+          <div>
+            <div class="doc-brand">Acompaña<span>León.</span></div>
+            <p style="font-size: 0.8rem; color: var(--muted); margin-top: 4px">
+              Nombre Provisional · Tecnología por Uaniofy · Piloto León, Guanajuato
+            </p>
+          </div>
+          <div class="doc-meta-box">
+            <div>PROPUESTA DE CO-CREACIÓN</div>
+            <div>MVP &amp; MODELO DE NEGOCIO</div>
+          </div>
+        </header>
+
+        <h1 class="doc-h1">Propuesta Técnica, Operativa y Comercial: Plataforma de Acompañamiento Confiable</h1>
+
+        <div class="doc-meta-grid">
+          <div class="doc-meta-item">
+            <small>Alianza</small>
+            <strong>Rosi (Operación) × Uaniofy (Tech)</strong>
+          </div>
+          <div class="doc-meta-item">
+            <small>Modelo Operativo</small>
+            <strong>Marketplace Curado (Sin flotilla propia)</strong>
+          </div>
+          <div class="doc-meta-item">
+            <small>Infraestructura Piloto</small>
+            <strong class="accent">$0 USD / mes (Cloud Free Tier)</strong>
+          </div>
+        </div>
+
+        <div class="doc-section" id="d1">
+          <h2 class="doc-h2">1. Resumen Ejecutivo y Diagnóstico en León, Guanajuato</h2>
+          <ul class="doc-list">
+            <li><strong>Pivote de alto impacto:</strong> En lugar de invertir ~$234,000 MXN en vehículos desde el día 1, el MVP resuelve el núcleo de valor: conectar apoderados con acompañantes validados en 3 niveles para citas, trámites y compañía con traslado flexible.</li>
+            <li><strong>Mercado comprobado:</strong> León suma <strong>165,649 adultos mayores de 60+</strong> (9.6% actual, proyectado a 15% en 2040). El TUI atiende ~2,500 personas/mes en rutas troncales, dejando desatendida la asistencia personalizada puerta a puerta.</li>
+            <li><strong>Doble cliente:</strong> El adulto mayor busca seguridad y autonomía; el apoderado (quien contrata y paga) busca certeza, trazabilidad y reportes puntuales.</li>
+          </ul>
+        </div>
+
+        <div class="doc-section" id="d2">
+          <h2 class="doc-h2">2. Comparativo Directo: Alternativas Actuales vs. Plataforma Acompaña</h2>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Dimensión</th><th>Alternativas Actuales</th><th>Nueva Solución (Uaniofy × Rosi)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>CapEx Inicial</strong></td><td>~$234,000 MXN en vehículo y equipo</td><td><strong>$0 en flotilla:</strong> modelo asset-light y traslado flexible</td></tr>
+              <tr><td><strong>Seguridad del Personal</strong></td><td>Sin capacitación ni verificación estandarizada</td><td><strong>3 Badges:</strong> KYC + Referencias + Certificación 40 h</td></tr>
+              <tr><td><strong>Trazabilidad</strong></td><td>Llamadas o incertidumbre en citas</td><td><strong>PIN + Mapa en vivo + WhatsApp + Acta de Entrega</strong></td></tr>
+              <tr><td><strong>Riesgo Médico/Legal</strong></td><td>Límites difusos con atención clínica</td><td><strong>Filtro Nivel 1/2/3</strong> no-médico + Protocolo 911</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="doc-section" id="d3">
+          <h2 class="doc-h2">3. Alcance Funcional del MVP (3 Portales)</h2>
+          <ul class="doc-list">
+            <li><strong>Portal Apoderado:</strong> Expedientes de asistidos con notas de trato digno, agendador de Cita Única o Plan Mensual (4/8 citas), seguimiento en vivo con PIN, mapa y WhatsApp, actas de entrega y evaluaciones.</li>
+            <li><strong>Portal Acompañante:</strong> Perfil con 3 badges, checklist y regla de oro, validación de PIN, bitácora, firma de entrega, ingresos (18% comisión) y registro de postulación KYC.</li>
+            <li><strong>Panel Admin (Rosi / Uaniofy):</strong> Cola de auditoría KYC para aprobar/rechazar acompañantes, torre de control de citas activas y KPIs de calidad.</li>
+          </ul>
+        </div>
+
+        <div class="doc-section" id="d4">
+          <h2 class="doc-h2">4. Sistema Integral de Seguridad y Capacitación (40 h)</h2>
+          <div class="doc-quote">Regla de oro operativa: “Ayudar sin sustituir la autonomía.” Servicio estrictamente no-médico.</div>
+          <ul class="doc-list">
+            <li><strong>Badge 1 (KYC):</strong> INE, selfie biométrica, comprobante de domicilio en León y no antecedentes.</li>
+            <li><strong>Badge 2 (Aptitud):</strong> Entrevista con operación (Rosi) y referencias comprobadas.</li>
+            <li><strong>Badge 3 (Certificación 40 h):</strong> Trato digno, bastón/andador, primeros auxilios, protocolos, ética LFPDPPP y simulación práctica (mín. 80%).</li>
+          </ul>
+        </div>
+
+        <div class="doc-section" id="d5">
+          <h2 class="doc-h2">5. Tarifas Sugeridas y Planes de Citas</h2>
+          <table class="doc-table">
+            <thead>
+              <tr><th>Modalidad</th><th class="num-col">Tarifa Público</th><th class="num-col">Comisión (18%)</th><th>Objetivo</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Cita Única Simple</strong></td><td class="num-col">$320 MXN</td><td class="num-col">$58 MXN</td><td>Mandados, compras o compañía puntual</td></tr>
+              <tr><td><strong>Cita Única Asistida</strong></td><td class="num-col">$420 MXN</td><td class="num-col">$76 MXN</td><td>Consultas médicas, bancos y espera en trámites</td></tr>
+              <tr><td><strong>Plan Esencial (4 Citas/mes)</strong></td><td class="num-col">$1,360 MXN</td><td class="num-col">$245 MXN</td><td>Ingreso recurrente ($340/cita)</td></tr>
+              <tr><td><strong>Plan Familiar (8 Citas/mes)</strong></td><td class="num-col">$2,560 MXN</td><td class="num-col">$461 MXN</td><td>Retención alta ($320/cita)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="doc-section" id="d6">
+          <h2 class="doc-h2">6. Arquitectura Tecnológica ($0 USD / mes en Piloto)</h2>
+          <ul class="doc-list">
+            <li><strong>Frontend:</strong> React 19 + TypeScript + Vite + Tailwind CSS, responsivo y optimizado para móvil.</li>
+            <li><strong>Cloud Free Tier:</strong> Firebase (Firestore + Auth + Hosting SSL) o Supabase Free Tier, sin costos fijos de servidor durante validación.</li>
+          </ul>
+        </div>
+
+        <div class="doc-section" id="d7">
+          <h2 class="doc-h2">7. Cronograma de Ejecución (6 Semanas)</h2>
+          <table class="doc-table">
+            <thead><tr><th>Fase</th><th class="num-col">Duración</th><th>Entregables</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Fase 1: Marca y BD</strong></td><td class="num-col">1 semana</td><td>Nombre oficial, privacidad LFPDPPP y modelo de datos</td></tr>
+              <tr><td><strong>Fase 2: Portales Core</strong></td><td class="num-col">2 semanas</td><td>Expedientes, agendador cita/plan y flujo PIN</td></tr>
+              <tr><td><strong>Fase 3: Admin KYC y Bitácora</strong></td><td class="num-col">2 semanas</td><td>Cola de validación 3 badges, actas y alertas</td></tr>
+              <tr><td><strong>Fase 4: Piloto León</strong></td><td class="num-col">1 semana</td><td>Certificación de equipo inicial y lanzamiento productivo</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="doc-section" id="d8">
+          <h2 class="doc-h2">8. Inversión Modular de Referencia y Esquema</h2>
+          <table class="doc-table">
+            <thead><tr><th>Componente</th><th>Descripción</th><th class="num-col">Valor Ref.</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Core MVP Plataforma</strong></td><td>3 Portales completos + Expedientes + Planes + KYC 3 Badges + Protocolo 911</td><td class="num-col"><strong>$28,000 MXN</strong></td></tr>
+              <tr><td><strong>Módulo A (Opcional)</strong></td><td>WhatsApp Business API automático</td><td class="num-col">$6,500 MXN</td></tr>
+              <tr><td><strong>Módulo B (Opcional)</strong></td><td>Pasarela de pagos recurrentes (Stripe / MercadoPago)</td><td class="num-col">$5,500 MXN</td></tr>
+              <tr><td><strong>Módulo C (Opcional)</strong></td><td>GPS en vivo continuo + App instalable PWA</td><td class="num-col">$7,000 MXN</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size: 0.88rem; color: var(--body)">
+            <strong>Esquema sugerido:</strong> 40% inicio / 30% avance Fase 3 / 30% Go-Live, o bien reconocimiento como aportación tecnológica dentro de la sociedad Uaniofy × Rosi.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const deckLinks = Array.from(document.querySelectorAll("#deckIndex .rail-link"));
+      const counterEl = document.getElementById("slideCounter");
+      const progressEl = document.getElementById("progressBar");
+      const btnDeckMode = document.getElementById("btnDeckMode");
+      const btnDocMode = document.getElementById("btnDocMode");
+      const deckIndex = document.getElementById("deckIndex");
+      const docIndex = document.getElementById("docIndex");
+      const slideControls = document.getElementById("slideControls");
+      let currentIdx = 0;
+      let isDocMode = false;
+
+      function setDocMode(val) {
+        isDocMode = val;
+        document.documentElement.classList.toggle("doc-mode", isDocMode);
+        btnDeckMode.classList.toggle("active", !isDocMode);
+        btnDocMode.classList.toggle("active", isDocMode);
+        deckIndex.style.display = isDocMode ? "none" : "block";
+        docIndex.style.display = isDocMode ? "block" : "none";
+        slideControls.style.display = isDocMode ? "none" : "flex";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function updateActiveSlide() {
+        if (isDocMode) return;
+        const mid = window.innerHeight * 0.45;
+        let active = 0;
+        slides.forEach((s, i) => {
+          const rect = s.getBoundingClientRect();
+          if (rect.top <= mid) active = i;
+        });
+        currentIdx = active;
+        deckLinks.forEach((a, i) => a.classList.toggle("active", i === active));
+        counterEl.textContent = `0${active + 1} / 0${slides.length}`;
+        progressEl.style.transform = `scaleX(${(active + 1) / slides.length})`;
+      }
+
+      window.addEventListener("scroll", updateActiveSlide, { passive: true });
+
+      function goSlide(idx) {
+        if (isDocMode) setDocMode(false);
+        const target = slides[Math.max(0, Math.min(slides.length - 1, idx))];
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+      }
+
+      function stepSlide(dir) {
+        goSlide(currentIdx + dir);
+      }
+
+      function toggleFull() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
+      }
+
+      window.addEventListener("keydown", (e) => {
+        if (isDocMode) return;
+        if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
+        if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
+          e.preventDefault();
+          stepSlide(1);
+        } else if (["ArrowUp", "ArrowLeft", "PageUp"].includes(e.key)) {
+          e.preventDefault();
+          stepSlide(-1);
+        }
+      });
+
+      function fmt(n) {
+        return "$" + n.toLocaleString("es-MX") + " MXN";
+      }
+
+      function fmtShort(n) {
+        return "$" + n.toLocaleString("es-MX");
+      }
+
+      function recalcQuote() {
+        let total = 28000;
+        let count = 0;
+        ["mod1", "mod2", "mod3"].forEach((id) => {
+          const el = document.getElementById(id);
+          const row = document.getElementById("row-" + id);
+          if (el.checked) {
+            total += Number(el.dataset.price);
+            count++;
+            row.classList.add("active");
+          } else {
+            row.classList.remove("active");
+          }
+        });
+        document.getElementById("totalAmount").textContent = fmt(total);
+        document.getElementById("p1Amount").textContent = fmtShort(Math.round(total * 0.4));
+        document.getElementById("p2Amount").textContent = fmtShort(Math.round(total * 0.3));
+        document.getElementById("p3Amount").textContent = fmtShort(Math.round(total * 0.3));
+        document.getElementById("packageLabel").textContent =
+          count === 3
+            ? "Ecosistema Completo (Automatizado + GPS)"
+            : count === 0
+              ? "Core MVP (Listo para piloto en León)"
+              : `Core MVP + ${count} módulo(s) opcional(es)`;
+      }
+    </script>
+  </body>
+</html>
